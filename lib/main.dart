@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/startscreen.dart';
+import '../screens/home_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'iu-radio-app',
-      home: StartScreen(),
+      home: HomeScreen(),
     );
   }
 }
