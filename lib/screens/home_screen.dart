@@ -1,3 +1,4 @@
+// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/home/home_bloc.dart';
@@ -63,63 +64,69 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 },
                 builder: (context, state) {
-                  if (state is HomeInProgressState) {
-                    return const CircularProgressIndicator();
+                  String title = 'Unknown Title';
+                  String interpret = 'Unknown Interpret';
+                  bool isPlaying = false;
+
+                  if (state is HomeSuccessState) {
+                    title = state.title;
+                    interpret = state.interpret;
+                    isPlaying = state.isPlaying;
                   }
+
                   return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              'Song: Song-Titel',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            'Song: $title',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
                             ),
-                            const SizedBox(height: 5),
-                            Text(
-                              'Album: Album-Name',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'Interpret: $interpret',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FloatingActionButton(
-                              onPressed: () {
-                                // implement logic for left button
-                              },
-                              child: const Icon(Icons.lyrics),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FloatingActionButton(
+                            onPressed: () {
+                              // Implementiere Logik für den linken Button
+                            },
+                            child: const Icon(Icons.lyrics),
+                          ),
+                          const SizedBox(width: 20),
+                          FloatingActionButton(
+                            onPressed: () {
+                              _homeBloc.add(PlayButton());
+                            },
+                            child: Icon(
+                              isPlaying ? Icons.pause : Icons.play_arrow,
                             ),
-                            const SizedBox(width: 20),
-                            FloatingActionButton(
-                              onPressed: () {
-                                _homeBloc.add(PlayButton());
-                              },
-                              child: Icon(
-                                state is HomeSuccessState && state.isPlaying
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            FloatingActionButton(
-                              onPressed: () {
-                                // implement logic for right button
-                              },
-                              child: const Icon(Icons.grade),
-                            ),
-                          ],
-                        )
-                      ]);
+                          ),
+                          const SizedBox(width: 20),
+                          FloatingActionButton(
+                            onPressed: () {
+                              // Implementiere Logik für den rechten Button
+                            },
+                            child: const Icon(Icons.grade),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
                 },
               ),
             ],

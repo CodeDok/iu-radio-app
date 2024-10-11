@@ -9,8 +9,11 @@ class HomeInProgressState extends HomeState {}
 
 class HomeSuccessState extends HomeState {
   final bool isPlaying;
+  final String title;
+  final String interpret;
 
-  HomeSuccessState(this.isPlaying);
+  HomeSuccessState(
+      {required this.isPlaying, required this.title, required this.interpret});
 }
 
 class HomeFailureState extends HomeState {}

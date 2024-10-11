@@ -16,6 +16,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   flutter_localizations:
     sdk: flutter
+  just_audio: ^0.9.41
   meta: ^1.15.0
 
 dev_dependencies:
