@@ -1,60 +1,56 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:radio_app/model/song_information.dart';
+import 'package:radio_app/repository/radioplayer/radio_player_repository.dart';
 
-part 'home_event.dart';
-part 'home_state.dart';
+part 'home_player_state.dart';
+part 'home_player_event.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final player = AudioPlayer();
-  bool isPlaying = false;
-  String currentTitle = 'Unknown Title';
-  String currentInterpret = 'Unknown Interpret';
+class HomeBloc extends Bloc<HomePlayerEvent, HomePlayerState> {
 
-  HomeBloc() : super(HomeInitial()) {
-    on<PlayButton>((event, emit) async {
-      emit(HomeInProgressState());
-      try {
-        if (isPlaying) {
-          await player.pause();
-        } else {
-          await player.setUrl(
-              'https://audio-edge-cmc51.fra.h.radiomast.io/ref-128k-mp3-stereo');
-          player.play();
+  final RadioPlayerRepository _radioPlayerRepository;
+  StreamSubscription<SongInformation?>? _currentMetadataStream;
 
-          player.icyMetadataStream.listen((icyMetadata) {
-            final titleWithInterpret =
-                icyMetadata?.info?.title ?? 'Unknown Title';
-            List<String> parts = titleWithInterpret.split(' - ');
+  HomeBloc(this._radioPlayerRepository) : super(HomeInitial()) {
+    on<HomePlayerStarted>(_startPlaying);
+    on<HomePlayerStopped>(_stopPlaying);
+    on<HomePlayerMetadataUpdated>(_updateIcecastMetadata);
+  }
 
-            if (parts.length == 2) {
-              currentTitle = parts[1].trim(); // Second part as title
-              currentInterpret = parts[0].trim(); // First part as interpret
-            } else {
-              currentTitle = titleWithInterpret;
-              currentInterpret = 'Unknown Interpret';
-            }
+  FutureOr<void> _updateIcecastMetadata(HomePlayerMetadataUpdated event, emit) {
+    emit(HomePlayerPlayingState(songInformation: event.songInformation));
+  }
 
-            add(MetadataUpdateEvent(currentTitle, currentInterpret));
-          });
-        }
-        isPlaying = !isPlaying;
-        emit(HomeSuccessState(
-            isPlaying: isPlaying,
-            title: currentTitle,
-            interpret: currentInterpret));
-      } catch (error) {
-        emit(HomeFailureState());
-      }
-    });
+  FutureOr<void> _stopPlaying(event, emit) async {
+    try {
+      await _radioPlayerRepository.stopPlaying();
+      _currentMetadataStream?.cancel();
+      emit(HomePlayerStoppedState());
+    } catch (error) {
+      emit(HomePlayerFailureState("Could not stop playback"));
+    }
+  }
 
-    on<MetadataUpdateEvent>((event, emit) {
-      currentTitle = event.title;
-      currentInterpret = event.interpret;
-      emit(HomeSuccessState(
-          isPlaying: isPlaying,
-          title: event.title,
-          interpret: event.interpret));
-    });
+
+  Future<void> _startPlaying(HomePlayerStarted event, Emitter<HomePlayerState> emit) async {
+    emit(HomePlayerInitializationState());
+    try {
+      SongInformation songInformationAtStart = await _radioPlayerRepository.startPlaying();
+      _currentMetadataStream = _radioPlayerRepository.getSongInformationStream().listen((songInformation) {
+        add(HomePlayerMetadataUpdated(songInformation: songInformation));
+      });
+      emit(HomePlayerPlayingState(songInformation: songInformationAtStart));
+    } catch (error) {
+      emit(HomePlayerFailureState("Could not start streaming to player"));
+    }
+  }
+
+
+  @override
+  Future<void> close() {
+    _radioPlayerRepository.cleanup();
+    _currentMetadataStream?.cancel();
+    return super.close();
   }
 }
