@@ -13,41 +13,46 @@ class SongInformation extends StatelessWidget {
         final title = state is HomePlayerPlayingState ? state.songInformation.title : '-';
         final interpret = state is HomePlayerPlayingState ? state.songInformation.interpret : '-';
 
-        return Column(
-          children: [
-            state is HomePlayerInitializationState
-                ? LoadingAnimationWidget.staggeredDotsWave(color: Colors.black, size: 20)
-                : Text(
-                    title,
+        return Container(
+          constraints: BoxConstraints(
+            minHeight: 70
+          ),
+          child: Column(
+            children: [
+              state is HomePlayerInitializationState
+                  ? LoadingAnimationWidget.staggeredDotsWave(color: Colors.black, size: 20)
+                  : Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+              const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Interpret: ',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Interpret: ',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                state is HomePlayerInitializationState
-                    ? LoadingAnimationWidget.staggeredDotsWave(color: Colors.black, size: 20)
-                    : Text(
-                        interpret,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
+                  state is HomePlayerInitializationState
+                      ? LoadingAnimationWidget.staggeredDotsWave(color: Colors.black, size: 20)
+                      : Text(
+                          interpret,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         );
       },
     );

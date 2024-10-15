@@ -20,9 +20,10 @@ class HomeControls extends StatelessWidget {
                 onPressed: () {
                   // Implementiere Logik für den linken Button
                 },
+                tooltip: "Aktuellen Song bewerten",
                 child: const Icon(Icons.lyrics),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 30),
               FloatingActionButton(
                 onPressed: () {
                   var bloc = context.read<HomeBloc>();
@@ -39,11 +40,12 @@ class HomeControls extends StatelessWidget {
                   )
                  : Icon(homePlayerState is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow),
                 ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 30),
               FloatingActionButton(
                 onPressed: () {
                   // Implementiere Logik für den rechten Button
                 },
+                tooltip: "Moderator bewerten",
                 child: const Icon(Icons.grade),
               ),
             ],

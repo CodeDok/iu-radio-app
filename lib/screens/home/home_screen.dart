@@ -30,8 +30,25 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/images/iu-radio-app-logo.png', height: 200),
-                const SizedBox(height: 20),
+                Container(
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    // add border
+                    border: Border.all(width: 10, color: Theme.of(context).colorScheme.primary),
+                    // set border radius
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    // implement image
+                    child: Image.asset(
+                      'assets/images/iu-radio-app-logo.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
                 BlocConsumer<HomeBloc, HomePlayerState>(
                   listener: (context, state) {
                     if (state is HomePlayerFailureState) {
@@ -47,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SongInformation(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 30),
                         HomeControls(),
                       ],
                     );
