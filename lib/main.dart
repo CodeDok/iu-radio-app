@@ -13,26 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'iu-radio-app',
-      home: Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Chip(
-          label: Text(
-            'Radio Station',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          side: BorderSide.none,
-        ),
-      ),
-      body: HomeScreen(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      )
+        title: 'iu-radio-app',
+        home: HomeScreen()
     );
   }
 }

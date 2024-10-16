@@ -1,56 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:radio_app/bloc/home/home_bloc.dart';
+import 'package:radio_app/screens/rating/song_rating_screen.dart';
 
 class HomeControls extends StatelessWidget {
-  const HomeControls({
-    super.key
-  });
+  const HomeControls({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-        builder: (context) {
-          final homePlayerState = context.watch<HomeBloc>().state;
-
-          return Row(
+    return BlocBuilder<HomeBloc, HomePlayerState>(builder: (context, state) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FloatingActionButton(
-                onPressed: () {
-                  // Implementiere Logik für den linken Button
-                },
-                tooltip: "Aktuellen Song bewerten",
-                child: const Icon(Icons.lyrics),
-              ),
+              if (state is HomePlayerPlayingState) ...[
+                FloatingActionButton(
+                  heroTag: "Song",
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SongRatingScreen(songTitle: ""),
+                      ),
+                    );
+                  },
+                  tooltip: "Rate current song",
+                  child: const Icon(Icons.stars),
+                ),
+              ],
               const SizedBox(width: 30),
               FloatingActionButton(
                 onPressed: () {
                   var bloc = context.read<HomeBloc>();
-                  if (homePlayerState is! HomePlayerPlayingState) {
+                  if (state is! HomePlayerPlayingState) {
                     bloc.add(HomePlayerStarted());
                   } else {
                     bloc.add(HomePlayerStopped());
                   }
                 },
-                child: homePlayerState is HomePlayerInitializationState ?
-                  CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 3,
-                  )
-                 : Icon(homePlayerState is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow),
-                ),
-              const SizedBox(width: 30),
-              FloatingActionButton(
-                onPressed: () {
-                  // Implementiere Logik für den rechten Button
-                },
-                tooltip: "Moderator bewerten",
-                child: const Icon(Icons.grade),
+                child: state is HomePlayerInitializationState
+                    ? CircularProgressIndicator(
+                        strokeWidth: 3,
+                      )
+                    : Icon(state is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow),
               ),
+              const SizedBox(width: 30),
+              if (state is HomePlayerPlayingState) ...[
+                FloatingActionButton(
+                  heroTag: "Wish",
+                  onPressed: () {},
+                  tooltip: "Wish song",
+                  child: const Icon(Icons.lyrics),
+                ),
+              ]
             ],
-          );
-        }
-    );
+          ),
+          const SizedBox(height: 30),
+          FloatingActionButton.extended(
+            heroTag: "Moderator",
+            onPressed: () {},
+            tooltip: "Rate current moderator",
+            label: const Text("Rate moderator"),
+            icon: const Icon(Icons.stars),
+          ),
+        ],
+      );
+    });
   }
 }
