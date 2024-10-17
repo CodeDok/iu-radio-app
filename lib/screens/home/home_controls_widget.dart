@@ -21,7 +21,7 @@ class HomeControls extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const SongRatingScreen(songTitle: ""),
+                        builder: (context) => SongRatingScreen(songTitle: state.songInformation.title),
                       ),
                     );
                   },
