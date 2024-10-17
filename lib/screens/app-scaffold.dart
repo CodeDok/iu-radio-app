@@ -30,7 +30,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           side: BorderSide.none,
         ),
       ),
-      body: widget.body,
+      body: SingleChildScrollView(child: widget.body),
     );
   }
 }

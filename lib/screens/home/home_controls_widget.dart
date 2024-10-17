@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:radio_app/bloc/home/home_bloc.dart';
+import 'package:radio_app/screens/rating/moderator_rating_screen.dart';
 import 'package:radio_app/screens/rating/song_rating_screen.dart';
 
 class HomeControls extends StatelessWidget {
@@ -10,7 +11,6 @@ class HomeControls extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomePlayerState>(builder: (context, state) {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -56,14 +56,22 @@ class HomeControls extends StatelessWidget {
               ]
             ],
           ),
-          const SizedBox(height: 30),
-          FloatingActionButton.extended(
-            heroTag: "Moderator",
-            onPressed: () {},
-            tooltip: "Rate current moderator",
-            label: const Text("Rate moderator"),
-            icon: const Icon(Icons.stars),
-          ),
+          if (state is HomePlayerPlayingState) ...[
+            const SizedBox(height: 30),
+            FloatingActionButton.extended(
+              heroTag: "Moderator",
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ModeratorRatingScreen(),
+                  ),
+                );
+              },
+              tooltip: "Rate current moderator",
+              label: const Text("Rate moderator"),
+              icon: const Icon(Icons.stars),
+            ),
+          ]
         ],
       );
     });
