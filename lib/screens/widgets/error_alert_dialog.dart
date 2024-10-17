@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ErrorAlertDialog extends StatelessWidget {
-  const ErrorAlertDialog({super.key, required this.errorMessage, required this.heading});
+  const ErrorAlertDialog({super.key, required this.errorMessage, required this.title});
 
   final String errorMessage;
-  final String heading;
+  final String title;
 
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       icon: Icon(Icons.bug_report, color: Colors.red),
-      title: Text(heading),
+      title: Text(title),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[

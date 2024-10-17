@@ -3,5 +3,5 @@ class Song {
   final String interpret;
   final String album;
 
-  Song({required this.title, required this.interpret, required this.album});
+  Song({required this.title, required this.interpret, this.album = ""});
 }

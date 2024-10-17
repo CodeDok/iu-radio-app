@@ -4,9 +4,9 @@ import 'package:radio_app/bloc/rating/moderator/moderator_rating_bloc.dart';
 import 'package:radio_app/bloc/rating/rating_result.dart';
 import 'package:radio_app/repository/rating/moderator_rating_repository.dart';
 import 'package:radio_app/screens/app-scaffold.dart';
-import 'package:radio_app/screens/rating/rating_error_alert_dialog.dart';
+import 'package:radio_app/screens/widgets/error_alert_dialog.dart';
 import 'package:radio_app/screens/rating/rating_form_widget.dart';
-import 'package:radio_app/screens/rating/rating_success_alert_dialog.dart';
+import 'package:radio_app/screens/widgets/success_alert_dialog.dart';
 import 'package:radio_app/screens/widgets/rounded_square_image.dart';
 
 class ModeratorRatingScreen extends StatefulWidget {
@@ -40,10 +40,10 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
                           moderatorLastName: state.moderatorLastName,
                           moderatorImageUrl: state.moderatorImageUrl),
                       ModeratorRatingLoadingError() => ErrorAlertDialog(
-                          heading: "Error while trying to load moderator information", errorMessage: state.errorMessage),
-                      ModeratorRatingSubmissionSuccessful() => SuccessAlertDialog(),
+                          title: "Error while trying to load moderator information", errorMessage: state.errorMessage),
+                      ModeratorRatingSubmissionSuccessful() => SuccessAlertDialog(title: "Submitted rating successfully!"),
                       ModeratorRatingSubmissionFailure() =>
-                        ErrorAlertDialog(heading: "Error while trying to submit rating!", errorMessage: state.errorMessage),
+                        ErrorAlertDialog(title: "Error while trying to submit rating!", errorMessage: state.errorMessage),
                     };
                   },
                 ),
@@ -56,7 +56,6 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
 
 class _Form extends StatelessWidget {
   const _Form({
-    super.key,
     required this.moderatorFirstName,
     required this.moderatorLastName,
     this.moderatorImageUrl,
@@ -92,7 +91,6 @@ class _Form extends StatelessWidget {
 
 class _NetworkImage extends StatelessWidget {
   const _NetworkImage({
-    super.key,
     required this.moderatorImageUrl,
   });
 
