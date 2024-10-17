@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:radio_app/bloc/rating/rating_result.dart';
 import 'package:radio_app/domain_models/five_star_rating.dart';
+import 'package:radio_app/domain_models/song.dart';
 import 'package:radio_app/domain_models/song_rating.dart';
 import 'package:radio_app/repository/rating/song_rating_repository.dart';
 
@@ -22,7 +23,7 @@ class SongRatingBloc extends Bloc<SongRatingEvent, SongRatingState> {
     try {
       _songRatingRepository.sendSongRating(
           SongRating(
-            title: event.songTitle,
+            song: Song(title: event.songTitle, album: "", interpret: event.songInterpret),
             rating: FiveStarRating(stars: event.ratingResult.rating),
             comment: event.ratingResult.comment
           )

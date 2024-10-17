@@ -9,9 +9,10 @@ import 'package:radio_app/screens/rating/rating_form_widget.dart';
 import 'package:radio_app/screens/rating/rating_success_alert_dialog.dart';
 
 class SongRatingScreen extends StatefulWidget {
-  const SongRatingScreen({super.key, required this.songTitle});
+  const SongRatingScreen({super.key, required this.songTitle, required this.interpret});
 
   final String songTitle;
+  final String interpret;
 
   @override
   State<SongRatingScreen> createState() => _SongRatingScreenState();
@@ -32,7 +33,8 @@ class _SongRatingScreenState extends State<SongRatingScreen> {
                   return switch (state) {
                     SongRatingSubmissionInProgress() => CircularProgressIndicator(),
                     SongRatingSubmissionSuccessful() => SuccessAlertDialog(),
-                    SongRatingSubmissionFailure() => ErrorAlertDialog(heading: "Error while trying to submit rating!", errorMessage: state.errorMessage),
+                    SongRatingSubmissionFailure() => ErrorAlertDialog(
+                        heading: "Error while trying to submit rating!", errorMessage: state.errorMessage),
                     _ => Form(widget: widget)
                   };
                 },
@@ -54,13 +56,13 @@ class Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RatingFormWidget(
-          value: widget.songTitle,
-          maxCommentLength: 255,
-          processResult: (RatingResult ratingResult) {
-    context
-        .read<SongRatingBloc>()
-        .add(SongRatingSubmitted(songTitle: widget.songTitle, ratingResult: ratingResult));
-          },
-        );
+      value: widget.songTitle,
+      maxCommentLength: 255,
+      processResult: (RatingResult ratingResult) {
+        context
+            .read<SongRatingBloc>()
+            .add(SongRatingSubmitted(songTitle: widget.songTitle, songInterpret: widget.interpret, ratingResult: ratingResult));
+      },
+    );
   }
 }
