@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:radio_app/bloc/home/home_bloc.dart';
 import 'package:radio_app/screens/rating/moderator_rating_screen.dart';
 import 'package:radio_app/screens/rating/song_rating_screen.dart';
+import 'package:radio_app/screens/wish/song_wish_screen.dart';
 
 class HomeControls extends StatelessWidget {
   const HomeControls({super.key});
@@ -50,7 +51,13 @@ class HomeControls extends StatelessWidget {
               if (state is HomePlayerPlayingState) ...[
                 FloatingActionButton(
                   heroTag: "Wish",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SongWishScreen(),
+                      ),
+                    );
+                  },
                   tooltip: "Wish song",
                   child: const Icon(Icons.lyrics),
                 ),

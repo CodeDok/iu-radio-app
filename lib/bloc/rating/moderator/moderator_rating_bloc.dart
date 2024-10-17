@@ -9,7 +9,6 @@ import 'package:radio_app/domain_models/moderator_rating.dart';
 import 'package:radio_app/repository/rating/moderator_rating_repository.dart';
 
 part 'moderator_rating_event.dart';
-
 part 'moderator_rating_state.dart';
 
 class ModeratorRatingBloc extends Bloc<ModeratorRatingEvent, ModeratorRatingState> {

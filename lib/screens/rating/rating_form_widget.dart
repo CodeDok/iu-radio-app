@@ -3,9 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:radio_app/bloc/rating/rating_result.dart';
 
 
-
-
-
 class RatingFormWidget extends StatefulWidget {
   const RatingFormWidget({super.key, required this.value, required this.processResult, this.maxCommentLength = 50});
 
@@ -18,11 +15,10 @@ class RatingFormWidget extends StatefulWidget {
 }
 
 class _RatingFormWidgetState extends State<RatingFormWidget> {
-  final _textController = TextEditingController();
-
-  int currentRating = 1;
-
   final _formKey = GlobalKey<FormState>();
+
+  late int rating;
+  String comment = "";
 
   @override
   Widget build(BuildContext context) {
@@ -44,42 +40,33 @@ class _RatingFormWidgetState extends State<RatingFormWidget> {
                 ),
               ),
               SizedBox(height: 40),
-              RatingBar.builder(
-                initialRating: 3,
-                minRating: 1,
-                direction: Axis.horizontal,
-                wrapAlignment: WrapAlignment.end,
-                allowHalfRating: false,
-                itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (double rating) {
-                  currentRating = rating.toInt();
-                },
+              FiveStarRatingFormField(
+                onSaved: (value) => rating = value!,
               ),
               TextFormField(
-                controller: _textController,
                 decoration: InputDecoration(
                   labelText: "(optional) Comment",
                   alignLabelWithHint: true,
                 ),
+                autovalidateMode: AutovalidateMode.always,
                 validator: (value) {
                   if (value != null && value.length >= widget.maxCommentLength) {
                     return "Comment can't exceed ${widget.maxCommentLength} characters!";
                   }
                   return null;
                 },
+                onSaved: (value) => value == null || value.isEmpty ? "" : comment = value,
               ),
               SizedBox(height: 50),
               FloatingActionButton(
                 heroTag: "Rate",
                 onPressed: () {
-                  widget.processResult(
-                    RatingResult(currentRating, comment: _textController.text)
-                  );
+                  _formKey.currentState?.save();
+                  if (_formKey.currentState!.validate()) {
+                    widget.processResult(
+                        RatingResult(rating, comment: comment)
+                    );
+                  }
                 },
                 child: const Icon(Icons.send),
               ),
@@ -89,4 +76,34 @@ class _RatingFormWidgetState extends State<RatingFormWidget> {
       ),
     );
   }
+}
+
+class FiveStarRatingFormField extends FormField<int> {
+  FiveStarRatingFormField({
+    super.key,
+    required FormFieldSetter<int> onSaved,
+  }) : super (
+      onSaved: onSaved,
+      initialValue: 3,
+      autovalidateMode: AutovalidateMode.disabled,
+      builder: (FormFieldState<int> state) {
+        return RatingBar.builder(
+          initialRating: 3,
+          minRating: 1,
+          direction: Axis.horizontal,
+          wrapAlignment: WrapAlignment.end,
+          allowHalfRating: false,
+          itemCount: 5,
+          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+          itemBuilder: (context, _) =>
+              Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+          onRatingUpdate: (double rating) {
+            state.didChange(rating.toInt());
+          },
+        );
+      }
+  );
 }
