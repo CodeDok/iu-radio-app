@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:radio_app/model/song_information.dart';
+import 'package:radio_app/bloc/home/song_information.dart';
 import 'package:radio_app/repository/radioplayer/radio_player_repository.dart';
 
 part 'home_player_state.dart';

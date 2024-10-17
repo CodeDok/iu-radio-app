@@ -3,12 +3,8 @@
 import 'dart:async';
 
 import 'package:just_audio/just_audio.dart';
-import 'package:radio_app/model/song_information.dart';
-
-class PlaybackException implements Exception {
-  String cause;
-  PlaybackException(this.cause);
-}
+import 'package:radio_app/exceptions/playback_exception.dart';
+import 'package:radio_app/bloc/home/song_information.dart';
 
 
 class RadioPlayerRepository {
