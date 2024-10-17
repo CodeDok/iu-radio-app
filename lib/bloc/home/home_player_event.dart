@@ -8,8 +8,8 @@ class HomePlayerStarted extends HomePlayerEvent {}
 
 class HomePlayerStopped extends HomePlayerEvent {}
 
-class HomePlayerMetadataUpdated extends HomePlayerEvent {
+class _HomePlayerMetadataUpdated extends HomePlayerEvent {
   final SongInformation songInformation;
 
-  HomePlayerMetadataUpdated({required this.songInformation});
+  _HomePlayerMetadataUpdated({required this.songInformation});
 }
