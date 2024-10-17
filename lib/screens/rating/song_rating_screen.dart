@@ -4,9 +4,9 @@ import 'package:radio_app/bloc/rating/rating_result.dart';
 import 'package:radio_app/bloc/rating/song/song_rating_bloc.dart';
 import 'package:radio_app/repository/rating/song_rating_repository.dart';
 import 'package:radio_app/screens/app-scaffold.dart';
-import 'package:radio_app/screens/rating/rating_error_alert_dialog.dart';
+import 'package:radio_app/screens/widgets/error_alert_dialog.dart';
 import 'package:radio_app/screens/rating/rating_form_widget.dart';
-import 'package:radio_app/screens/rating/rating_success_alert_dialog.dart';
+import 'package:radio_app/screens/widgets/success_alert_dialog.dart';
 
 class SongRatingScreen extends StatefulWidget {
   const SongRatingScreen({super.key, required this.songTitle, required this.interpret});
@@ -32,10 +32,10 @@ class _SongRatingScreenState extends State<SongRatingScreen> {
                 builder: (context, state) {
                   return switch (state) {
                     SongRatingSubmissionInProgress() => CircularProgressIndicator(),
-                    SongRatingSubmissionSuccessful() => SuccessAlertDialog(),
+                    SongRatingSubmissionSuccessful() => SuccessAlertDialog(title: "Submitted rating successfully!"),
                     SongRatingSubmissionFailure() => ErrorAlertDialog(
-                        heading: "Error while trying to submit rating!", errorMessage: state.errorMessage),
-                    _ => Form(widget: widget)
+                        title: "Error while trying to submit rating!", errorMessage: state.errorMessage),
+                    _ => _Form(widget: widget)
                   };
                 },
               ),
@@ -45,9 +45,8 @@ class _SongRatingScreenState extends State<SongRatingScreen> {
   }
 }
 
-class Form extends StatelessWidget {
-  const Form({
-    super.key,
+class _Form extends StatelessWidget {
+  const _Form({
     required this.widget,
   });
 

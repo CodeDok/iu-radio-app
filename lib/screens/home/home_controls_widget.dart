@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:radio_app/bloc/home/home_bloc.dart';
 import 'package:radio_app/screens/rating/moderator_rating_screen.dart';
 import 'package:radio_app/screens/rating/song_rating_screen.dart';
+import 'package:radio_app/screens/wish/song_wish_screen.dart';
 
 class HomeControls extends StatelessWidget {
   const HomeControls({super.key});
@@ -31,7 +32,7 @@ class HomeControls extends StatelessWidget {
                 ),
               ],
               const SizedBox(width: 30),
-              FloatingActionButton(
+              FloatingActionButton.large(
                 onPressed: () {
                   var bloc = context.read<HomeBloc>();
                   if (state is! HomePlayerPlayingState) {
@@ -44,13 +45,19 @@ class HomeControls extends StatelessWidget {
                     ? CircularProgressIndicator(
                         strokeWidth: 3,
                       )
-                    : Icon(state is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow),
+                    : Icon(state is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow, size: 32),
               ),
               const SizedBox(width: 30),
               if (state is HomePlayerPlayingState) ...[
                 FloatingActionButton(
                   heroTag: "Wish",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SongWishScreen(),
+                      ),
+                    );
+                  },
                   tooltip: "Wish song",
                   child: const Icon(Icons.lyrics),
                 ),

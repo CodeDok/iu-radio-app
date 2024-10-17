@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:radio_app/bloc/home/home_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:radio_app/bloc/home/home_bloc.dart';
 
 class SongInformation extends StatelessWidget {
   const SongInformation({super.key});

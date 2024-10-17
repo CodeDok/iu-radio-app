@@ -1,5 +1,4 @@
 
-import 'package:radio_app/bloc/rating/moderator/moderator_rating_bloc.dart';
 import 'package:radio_app/domain_models/moderator.dart';
 import 'package:radio_app/domain_models/moderator_rating.dart';
 

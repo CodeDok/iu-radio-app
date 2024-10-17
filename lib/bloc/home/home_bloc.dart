@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:radio_app/bloc/home/song_information.dart';
 import 'package:radio_app/repository/radioplayer/radio_player_repository.dart';
 
-part 'home_player_state.dart';
 part 'home_player_event.dart';
+part 'home_player_state.dart';
 
 class HomeBloc extends Bloc<HomePlayerEvent, HomePlayerState> {
 
@@ -15,10 +16,10 @@ class HomeBloc extends Bloc<HomePlayerEvent, HomePlayerState> {
   HomeBloc(this._radioPlayerRepository) : super(HomeInitial()) {
     on<HomePlayerStarted>(_startPlaying);
     on<HomePlayerStopped>(_stopPlaying);
-    on<HomePlayerMetadataUpdated>(_updateIcecastMetadata);
+    on<_HomePlayerMetadataUpdated>(_updateIcecastMetadata);
   }
 
-  FutureOr<void> _updateIcecastMetadata(HomePlayerMetadataUpdated event, emit) {
+  FutureOr<void> _updateIcecastMetadata(_HomePlayerMetadataUpdated event, emit) {
     emit(HomePlayerPlayingState(songInformation: event.songInformation));
   }
 
@@ -38,7 +39,7 @@ class HomeBloc extends Bloc<HomePlayerEvent, HomePlayerState> {
     try {
       SongInformation songInformationAtStart = await _radioPlayerRepository.startPlaying();
       _currentMetadataStream = _radioPlayerRepository.getSongInformationStream().listen((songInformation) {
-        add(HomePlayerMetadataUpdated(songInformation: songInformation));
+        add(_HomePlayerMetadataUpdated(songInformation: songInformation));
       });
       emit(HomePlayerPlayingState(songInformation: songInformationAtStart));
     } catch (error) {

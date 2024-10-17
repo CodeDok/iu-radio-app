@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:radio_app/bloc/rating/moderator/moderator_rating_bloc.dart';
 import 'package:radio_app/bloc/rating/rating_result.dart';
-import 'package:radio_app/bloc/rating/song/song_rating_bloc.dart';
 import 'package:radio_app/repository/rating/moderator_rating_repository.dart';
-import 'package:radio_app/repository/rating/song_rating_repository.dart';
 import 'package:radio_app/screens/app-scaffold.dart';
-import 'package:radio_app/screens/rating/rating_error_alert_dialog.dart';
+import 'package:radio_app/screens/widgets/error_alert_dialog.dart';
 import 'package:radio_app/screens/rating/rating_form_widget.dart';
-import 'package:radio_app/screens/rating/rating_success_alert_dialog.dart';
+import 'package:radio_app/screens/widgets/success_alert_dialog.dart';
 import 'package:radio_app/screens/widgets/rounded_square_image.dart';
 
 class ModeratorRatingScreen extends StatefulWidget {
@@ -37,15 +35,15 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
                       ModeratorRatingSubmissionInProgress() ||
                       ModeratorRatingLoadingModerator() ||
                       ModeratorRatingInitial() => Center(child: CircularProgressIndicator()),
-                      ModeratorRatingLoadedModerator() => Form(
+                      ModeratorRatingLoadedModerator() => _Form(
                           moderatorFirstName: state.moderatorFirstName,
                           moderatorLastName: state.moderatorLastName,
                           moderatorImageUrl: state.moderatorImageUrl),
                       ModeratorRatingLoadingError() => ErrorAlertDialog(
-                          heading: "Error while trying to load moderator information", errorMessage: state.errorMessage),
-                      ModeratorRatingSubmissionSuccessful() => SuccessAlertDialog(),
+                          title: "Error while trying to load moderator information", errorMessage: state.errorMessage),
+                      ModeratorRatingSubmissionSuccessful() => SuccessAlertDialog(title: "Submitted rating successfully!"),
                       ModeratorRatingSubmissionFailure() =>
-                        ErrorAlertDialog(heading: "Error while trying to submit rating!", errorMessage: state.errorMessage),
+                        ErrorAlertDialog(title: "Error while trying to submit rating!", errorMessage: state.errorMessage),
                     };
                   },
                 ),
@@ -56,9 +54,8 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
   }
 }
 
-class Form extends StatelessWidget {
-  const Form({
-    super.key,
+class _Form extends StatelessWidget {
+  const _Form({
     required this.moderatorFirstName,
     required this.moderatorLastName,
     this.moderatorImageUrl,
@@ -76,7 +73,7 @@ class Form extends StatelessWidget {
         RoundedSquareContainer(
             imageWidget: moderatorImageUrl!.isEmpty
                 ? Image.asset("assets/images/iu-radio-app-logo.png")
-                : NetworkImage(moderatorImageUrl: moderatorImageUrl!)),
+                : _NetworkImage(moderatorImageUrl: moderatorImageUrl!)),
         RatingFormWidget(
           value: "$moderatorFirstName $moderatorLastName",
           maxCommentLength: 255,
@@ -92,9 +89,8 @@ class Form extends StatelessWidget {
   }
 }
 
-class NetworkImage extends StatelessWidget {
-  const NetworkImage({
-    super.key,
+class _NetworkImage extends StatelessWidget {
+  const _NetworkImage({
     required this.moderatorImageUrl,
   });
 
