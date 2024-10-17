@@ -35,7 +35,7 @@ class _SongRatingScreenState extends State<SongRatingScreen> {
                     SongRatingSubmissionSuccessful() => SuccessAlertDialog(),
                     SongRatingSubmissionFailure() => ErrorAlertDialog(
                         heading: "Error while trying to submit rating!", errorMessage: state.errorMessage),
-                    _ => Form(widget: widget)
+                    _ => _Form(widget: widget)
                   };
                 },
               ),
@@ -45,8 +45,8 @@ class _SongRatingScreenState extends State<SongRatingScreen> {
   }
 }
 
-class Form extends StatelessWidget {
-  const Form({
+class _Form extends StatelessWidget {
+  const _Form({
     super.key,
     required this.widget,
   });

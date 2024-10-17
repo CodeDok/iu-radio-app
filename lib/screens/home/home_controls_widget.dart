@@ -32,7 +32,7 @@ class HomeControls extends StatelessWidget {
                 ),
               ],
               const SizedBox(width: 30),
-              FloatingActionButton(
+              FloatingActionButton.large(
                 onPressed: () {
                   var bloc = context.read<HomeBloc>();
                   if (state is! HomePlayerPlayingState) {
@@ -45,7 +45,7 @@ class HomeControls extends StatelessWidget {
                     ? CircularProgressIndicator(
                         strokeWidth: 3,
                       )
-                    : Icon(state is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow),
+                    : Icon(state is HomePlayerPlayingState ? Icons.pause : Icons.play_arrow, size: 32),
               ),
               const SizedBox(width: 30),
               if (state is HomePlayerPlayingState) ...[

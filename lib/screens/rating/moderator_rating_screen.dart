@@ -35,7 +35,7 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
                       ModeratorRatingSubmissionInProgress() ||
                       ModeratorRatingLoadingModerator() ||
                       ModeratorRatingInitial() => Center(child: CircularProgressIndicator()),
-                      ModeratorRatingLoadedModerator() => Form(
+                      ModeratorRatingLoadedModerator() => _Form(
                           moderatorFirstName: state.moderatorFirstName,
                           moderatorLastName: state.moderatorLastName,
                           moderatorImageUrl: state.moderatorImageUrl),
@@ -54,8 +54,8 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
   }
 }
 
-class Form extends StatelessWidget {
-  const Form({
+class _Form extends StatelessWidget {
+  const _Form({
     super.key,
     required this.moderatorFirstName,
     required this.moderatorLastName,
@@ -74,7 +74,7 @@ class Form extends StatelessWidget {
         RoundedSquareContainer(
             imageWidget: moderatorImageUrl!.isEmpty
                 ? Image.asset("assets/images/iu-radio-app-logo.png")
-                : NetworkImage(moderatorImageUrl: moderatorImageUrl!)),
+                : _NetworkImage(moderatorImageUrl: moderatorImageUrl!)),
         RatingFormWidget(
           value: "$moderatorFirstName $moderatorLastName",
           maxCommentLength: 255,
@@ -90,8 +90,8 @@ class Form extends StatelessWidget {
   }
 }
 
-class NetworkImage extends StatelessWidget {
-  const NetworkImage({
+class _NetworkImage extends StatelessWidget {
+  const _NetworkImage({
     super.key,
     required this.moderatorImageUrl,
   });
