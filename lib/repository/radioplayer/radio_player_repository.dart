@@ -11,6 +11,10 @@ class RadioPlayerRepository {
 
   late AudioPlayer _audioPlayer;
 
+  RadioPlayerRepository({required AudioPlayer audioPlayer}) {
+    _audioPlayer = audioPlayer;
+  }
+
   RadioPlayerRepository.fromUrl(String url) {
     _audioPlayer = AudioPlayer();
     _audioPlayer.setUrl(url);
