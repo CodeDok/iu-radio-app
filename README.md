@@ -32,7 +32,7 @@ docker run -it --rm -p 8080:8080 -v ${PWD}/stubs:/home/wiremock wiremock/wiremoc
 ```
 
 
-3.Running the application:
+3. Running the application:
 ```bash
 flutter run
 ```
