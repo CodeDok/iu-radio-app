@@ -72,6 +72,7 @@ void main() {
 
   testWidgets('should display _Form when state is loaded moderator', (WidgetTester tester) async {
     when(() => mockModeratorRatingBloc.state).thenReturn(ModeratorRatingLoadedModerator(
+      moderatorId: 1,
       moderatorFirstName: 'John',
       moderatorLastName: 'Doe',
       moderatorImageUrl: 'http://example.com/image.jpg',

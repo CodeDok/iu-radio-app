@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:radio_app/bloc/rating/rating_result.dart';
 import 'package:radio_app/domain_models/five_star_rating.dart';
@@ -12,16 +13,17 @@ part 'song_rating_event.dart';
 part 'song_rating_state.dart';
 
 class SongRatingBloc extends Bloc<SongRatingEvent, SongRatingState> {
+  final log = Logger('SongRatingBloc');
   final SongRatingRepository _songRatingRepository;
 
   SongRatingBloc(this._songRatingRepository) : super(SongRatingInitial()) {
     on<SongRatingSubmitted>(_submitSongRating);
   }
 
-  FutureOr<void> _submitSongRating(SongRatingSubmitted event, Emitter<SongRatingState> emit) {
+  FutureOr<void> _submitSongRating(SongRatingSubmitted event, Emitter<SongRatingState> emit) async {
     emit(SongRatingSubmissionInProgress());
     try {
-      _songRatingRepository.sendSongRating(
+      await _songRatingRepository.sendSongRating(
           SongRating(
             song: Song(title: event.songTitle, album: "", interpret: event.songInterpret),
             rating: FiveStarRating(stars: event.ratingResult.rating),
@@ -30,7 +32,8 @@ class SongRatingBloc extends Bloc<SongRatingEvent, SongRatingState> {
       );
       emit(SongRatingSubmissionSuccessful());
     } on Exception catch (_, error) {
-      emit(SongRatingSubmissionFailure("Error while trying to submit rating: ${error.toString()}"));
+      log.severe("Error while trying to submit rating", error);
+      emit(SongRatingSubmissionFailure("Error while trying to submit rating: "));
     }
   }
 }

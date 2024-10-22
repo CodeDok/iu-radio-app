@@ -8,12 +8,16 @@ final class ModeratorRatingInitial extends ModeratorRatingState {}
 final class ModeratorRatingLoadingModerator extends ModeratorRatingState {}
 
 final class ModeratorRatingLoadedModerator extends ModeratorRatingState {
+  final int moderatorId;
   final String moderatorFirstName;
   final String moderatorLastName;
   final String moderatorImageUrl;
 
   ModeratorRatingLoadedModerator(
-      {required this.moderatorFirstName, required this.moderatorLastName, required this.moderatorImageUrl});
+      {required this.moderatorId,
+      required this.moderatorFirstName,
+      required this.moderatorLastName,
+      required this.moderatorImageUrl});
 }
 
 final class ModeratorRatingLoadingError extends ModeratorRatingState {
@@ -31,5 +35,3 @@ final class ModeratorRatingSubmissionFailure extends ModeratorRatingState {
 
   ModeratorRatingSubmissionFailure(this.errorMessage);
 }
-
-

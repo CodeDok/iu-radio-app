@@ -36,6 +36,7 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
                       ModeratorRatingLoadingModerator() ||
                       ModeratorRatingInitial() => Center(child: CircularProgressIndicator()),
                       ModeratorRatingLoadedModerator() => _Form(
+                        moderatorId: state.moderatorId,
                           moderatorFirstName: state.moderatorFirstName,
                           moderatorLastName: state.moderatorLastName,
                           moderatorImageUrl: state.moderatorImageUrl),
@@ -56,11 +57,13 @@ class _ModeratorRatingScreenState extends State<ModeratorRatingScreen> {
 
 class _Form extends StatelessWidget {
   const _Form({
+    required this.moderatorId,
     required this.moderatorFirstName,
     required this.moderatorLastName,
     this.moderatorImageUrl,
   });
 
+  final int moderatorId;
   final String moderatorFirstName;
   final String moderatorLastName;
   final String? moderatorImageUrl;
@@ -79,6 +82,7 @@ class _Form extends StatelessWidget {
           maxCommentLength: 255,
           processResult: (RatingResult ratingResult) {
             context.read<ModeratorRatingBloc>().add(ModeratorRatingSubmitted(
+                moderatorId: moderatorId,
                 moderatorFirstName: moderatorFirstName,
                 moderatorLastName: moderatorLastName,
                 ratingResult: ratingResult));

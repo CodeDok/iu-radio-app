@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/moderator/rating"
+  },
+  "response": {
+    "status": 200,
+    "fixedDelayMilliseconds": 2000
+  }
+}

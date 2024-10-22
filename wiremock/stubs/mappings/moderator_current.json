@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/moderator/current"
+  },
+  "response": {
+    "status": 200,
+    "fixedDelayMilliseconds": 2000,
+    "bodyFileName": "moderator_current.json"
+  }
+}

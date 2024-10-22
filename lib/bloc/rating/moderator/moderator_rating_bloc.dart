@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:radio_app/bloc/rating/rating_result.dart';
 import 'package:radio_app/domain_models/five_star_rating.dart';
@@ -12,6 +13,8 @@ part 'moderator_rating_event.dart';
 part 'moderator_rating_state.dart';
 
 class ModeratorRatingBloc extends Bloc<ModeratorRatingEvent, ModeratorRatingState> {
+
+  final log = Logger('ModeratorRatingBloc');
   final ModeratorRatingRepository _moderatorRatingRepository;
 
   ModeratorRatingBloc(this._moderatorRatingRepository) : super(ModeratorRatingInitial()) {
@@ -25,27 +28,30 @@ class ModeratorRatingBloc extends Bloc<ModeratorRatingEvent, ModeratorRatingStat
     try {
       Moderator moderator = await _moderatorRatingRepository.retrieveCurrentModerator();
       emit(ModeratorRatingLoadedModerator(
+          moderatorId: moderator.id,
           moderatorFirstName: moderator.firstName,
           moderatorLastName: moderator.lastName,
           moderatorImageUrl: moderator.image.toString()));
-    } on Exception catch (_, exception) {
-      emit(ModeratorRatingLoadingError(exception.toString()));
+    } on Exception catch (error, exception) {
+      log.severe("Error while trying to load moderator information", error, exception);
+      emit(ModeratorRatingLoadingError("Error while trying to load moderator information"));
     }
   }
 
 
-  FutureOr<void> _saveModeratorRating(ModeratorRatingSubmitted event, Emitter<ModeratorRatingState> emit) {
+  Future<void> _saveModeratorRating(ModeratorRatingSubmitted event, Emitter<ModeratorRatingState> emit) async {
     emit(ModeratorRatingSubmissionInProgress());
     try {
-      _moderatorRatingRepository.sendModeratorRating(
+      await _moderatorRatingRepository.sendModeratorRating(
           ModeratorRating(
-            moderator: Moderator(firstName: event.moderatorFirstName, lastName: event.moderatorLastName),
+            moderator: Moderator(id: event.moderatorId, firstName: event.moderatorFirstName, lastName: event.moderatorLastName),
             rating: FiveStarRating(stars: event.ratingResult.rating),
           )
       );
       emit(ModeratorRatingSubmissionSuccessful());
-    } on Exception catch (_, error) {
-      emit(ModeratorRatingSubmissionFailure("Error while trying to submit rating: ${error.toString()}"));
+    } catch (exception) {
+      log.severe("Error while trying to submit rating", exception.toString());
+      emit(ModeratorRatingSubmissionFailure("Error while trying to submit rating"));
     }
   }
 }
