@@ -6,6 +6,8 @@ A radio app in flutter using a icecast audio stream.
 
 - Working and running android emulator 
   - tested with Android 14
+- Flutter Version >= 3.24.3
+- Dart Version >= 3.5.3
 
 ## Start
 
