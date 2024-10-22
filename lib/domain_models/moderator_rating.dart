@@ -6,6 +6,7 @@ import 'moderator.dart';
 class ModeratorRating {
   final Moderator moderator;
   final FiveStarRating rating;
+  final String comment;
 
-  ModeratorRating({required this.moderator, required this.rating});
+  ModeratorRating({required this.moderator, required this.rating, this.comment = ""});
 }

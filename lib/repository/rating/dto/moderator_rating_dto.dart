@@ -4,11 +4,13 @@ class ModeratorRatingDto {
   final String firstName;
   final String lastName;
   final int rating;
+  final String comment;
 
   ModeratorRatingDto({
     required this.firstName,
     required this.lastName,
     required this.rating,
+    this.comment = "",
   });
 
   factory ModeratorRatingDto.fromDomain(ModeratorRating moderatorRating) {
@@ -16,6 +18,7 @@ class ModeratorRatingDto {
       firstName: moderatorRating.moderator.firstName,
       lastName: moderatorRating.moderator.lastName,
       rating: moderatorRating.rating.stars,
+      comment: moderatorRating.comment,
     );
   }
 
@@ -24,6 +27,7 @@ class ModeratorRatingDto {
       'firstName': firstName,
       'lastName': lastName,
       'rating': rating.toString(),
+      'comment': comment,
     };
   }
 }

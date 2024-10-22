@@ -46,6 +46,7 @@ class ModeratorRatingBloc extends Bloc<ModeratorRatingEvent, ModeratorRatingStat
           ModeratorRating(
             moderator: Moderator(id: event.moderatorId, firstName: event.moderatorFirstName, lastName: event.moderatorLastName),
             rating: FiveStarRating(stars: event.ratingResult.rating),
+            comment: event.ratingResult.comment
           )
       );
       emit(ModeratorRatingSubmissionSuccessful());

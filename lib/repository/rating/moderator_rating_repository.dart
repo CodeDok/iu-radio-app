@@ -11,7 +11,7 @@ import 'dto/moderator_dto.dart';
 
 class ModeratorRatingRepository {
   final String radioStationApi = dotenv.get("RADIO_STATION_API_URL");
-  final client = http.Client();
+  var client = http.Client();
 
   Future<Moderator> retrieveCurrentModerator() async {
     var response = await client.get(Uri.http(radioStationApi, "/api/moderator/current"));
